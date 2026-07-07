@@ -13,7 +13,7 @@ steps:
     args: ['push', 'gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}']
 
 options:
-  logging: NONE
+ # logging: NONE
 
 substitutions:
   _PROJECT_ID: 'kubernetestest-494210'
