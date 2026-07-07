@@ -1,14 +1,21 @@
-steps: 
--  name: 'gcr.io/cloud-builders/git'
-   args: ['clone', 'https://github.com/oil78/repo-5.git']
+steps:
+  # Step 1: Clone the repository
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/oil78/repo-5.git']
 
--  name: 'gcr.io/cloud-builders/docker'
-   args: ['build', '-t', 'gcr.io/${PROJECT_ID}/${CINAME}:${VERSION}', '.']
+  # Step 2: Build the image (Notice the 'dir' parameter pointing to the cloned folder)
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: 'repo-5'
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}', '.']
 
--  name: 'gcr.io/cloud-builders/docker'
-   args: ['push', 'gcr.io/${PROJECT_ID}/${CINAME}:${VERSION}', '.']
+  # Step 3: Push the image (Removed the trailing '.')
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}']
+
+options:
+  logging: NONE
 
 substitutions:
-   PROJECT_ID : kubernetestest-494210
-   CINAME : gke-image
-   VERSION : v1.0
+  _PROJECT_ID: 'kubernetestest-494210'
+  _CINAME: 'gke-image'
+  _VERSION: 'v1.0'
